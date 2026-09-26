@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Raamiz and Fiza//Wedding Invitation//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:nikkah-20261218@raamiz-fiza
+DTSTAMP:20260926T000000Z
+DTSTART;VALUE=DATE:20261218
+DTEND;VALUE=DATE:20261219
+SUMMARY:Nikkah · Raamiz & Fiza
+LOCATION:Palm Hills Country Club\, Barki Road\, Lahore
+DESCRIPTION:Mr. Faisal Hayat Khan Niazi and Mrs. Shagufta Faisal cordially 
+ invite you to the Nikkah ceremony of their beloved son\, Raamiz\, with Fiz
+ a.
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,19 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Raamiz and Fiza//Wedding Invitation//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:walima-20261220@raamiz-fiza
+DTSTAMP:20260926T000000Z
+DTSTART;VALUE=DATE:20261220
+DTEND;VALUE=DATE:20261221
+SUMMARY:Walima · Raamiz & Fiza
+LOCATION:Montage Event Complex\, Main Gulberg Expressway\, Executive Block
+ \, Koral Town\, Islamabad
+DESCRIPTION:Mr. Faisal Hayat Khan Niazi and Mrs. Shagufta Faisal cordially 
+ invite you to the Walima reception of their beloved son\, Raamiz\, with Fi
+ za.
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR

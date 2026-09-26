@@ -1,0 +1,684 @@
+/* Raamiz & Fiza — digital invitation
+   Shared styles for /barat/ and /walima/. Theme is picked by <html data-event="…">. */
+
+:root {
+  --serif: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
+  --script: "Pinyon Script", "Snell Roundhand", "Apple Chancery", cursive;
+  --u: min(1vw, 4.8px);               /* 1% of the mobile column (caps at 480px on desktop) */
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --env-w: min(calc(var(--u) * 86), 370px, 58svh);
+  --env-h: calc(var(--env-w) * .69);
+}
+
+html[data-event="barat"] {
+  --bg: #e6e3db;
+  --glow: #f4f1ea;
+  --ink: #765a31;
+  --ink-soft: rgba(118, 90, 49, .86);
+  --line: rgba(118, 90, 49, .3);
+  --env-left: #f7f1e6;
+  --env-right: #ece4d6;
+  --env-bottom: #f2ebdf;
+  --env-flap: #f5efe4;
+  --env-in: #e5dccc;
+  --liner: #a6af9a;
+  --liner-line: rgba(247, 232, 190, .72);
+  --foil: #c2a062;
+  --shine-a: #85652f;
+  --shine-b: #b8944f;
+  --shine-c: #f0dca6;
+  --btn-bg: rgba(255, 255, 255, .42);
+}
+
+html[data-event="walima"] {
+  --bg: #ebdbd0;
+  --glow: #f7eee8;
+  --ink: #943a40;
+  --ink-soft: rgba(148, 58, 64, .86);
+  --line: rgba(148, 58, 64, .28);
+  --env-left: #fbf3ee;
+  --env-right: #f1e2da;
+  --env-bottom: #f6e9e2;
+  --env-flap: #f9efea;
+  --env-in: #e9d5cb;
+  --liner: #d4a19f;
+  --liner-line: rgba(252, 236, 206, .78);
+  --foil: #c9a26a;
+  --shine-a: #8b3037;
+  --shine-b: #b4585f;
+  --shine-c: #eeb2b4;
+  --btn-bg: rgba(255, 255, 255, .45);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+}
+
+/* Until the envelope is opened, nothing scrolls. */
+html.is-sealed,
+html.is-sealed body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* ───────────────────────── Stage (envelope scene) ───────────────────────── */
+
+.stage {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  overflow: hidden;
+  background: var(--bg);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.stage-glow {
+  position: absolute;
+  inset: 0;
+  will-change: opacity;
+  background:
+    radial-gradient(90% 55% at 50% 50%, var(--glow) 0%, transparent 70%),
+    radial-gradient(140% 90% at 50% 50%, transparent 55%, rgba(60, 40, 20, .07) 100%);
+}
+
+.stage-inner {
+  position: absolute;
+  inset: 0;
+  width: min(100%, 480px);
+  margin: 0 auto;
+}
+
+/* florals lifted from the card itself, feathered into the background */
+.decor {
+  position: absolute;
+  pointer-events: none;
+  will-change: opacity;
+  background: center / 100% 100% no-repeat;
+}
+html[data-event="barat"] .decor--tl {
+  top: calc(var(--sat) * .4 - var(--u) * 4);
+  left: calc(var(--u) * -10);
+  width: calc(var(--u) * 38);
+  aspect-ratio: 338 / 710;
+  background-image: url(decor-barat-tl.webp);
+}
+html[data-event="barat"] .decor--br {
+  bottom: calc(var(--u) * -6);
+  right: calc(var(--u) * -12);
+  width: calc(var(--u) * 56);
+  aspect-ratio: 450 / 620;
+  background-image: url(decor-barat-br.webp);
+}
+html[data-event="walima"] .decor--tl {
+  top: calc(var(--sat) * .4 - var(--u) * 6);
+  left: calc(var(--u) * -12);
+  width: calc(var(--u) * 54);
+  aspect-ratio: 460 / 610;
+  background-image: url(decor-walima-tl.webp);
+}
+html[data-event="walima"] .decor--br {
+  bottom: calc(var(--u) * -7);
+  right: calc(var(--u) * -14);
+  width: calc(var(--u) * 66);
+  aspect-ratio: 630 / 580;
+  background-image: url(decor-walima-br.webp);
+}
+
+.intro {
+  position: absolute;
+  will-change: opacity;
+  left: 0;
+  right: 0;
+  top: calc(var(--sat) + 5.5svh);
+  text-align: center;
+  padding: 0 24px;
+}
+
+.bismillah {
+  width: min(calc(var(--u) * 44), 196px);
+  aspect-ratio: 315 / 105;
+  margin: 0 auto;
+  background: linear-gradient(105deg, var(--shine-a) 38%, var(--shine-c) 50%, var(--shine-a) 62%) 0 0 / 320% 100%;
+  -webkit-mask: url(bismillah.png) center / contain no-repeat;
+  mask: url(bismillah.png) center / contain no-repeat;
+  animation: shimmer 6s ease-in-out infinite 1s;
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  55%, 100% { background-position: 0 0; }
+}
+
+.rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 150px;
+  margin: 14px auto 0;
+}
+.rule span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--line)); }
+.rule span:last-child { background: linear-gradient(270deg, transparent, var(--line)); }
+.rule i { width: 5px; height: 5px; border: 1px solid var(--ink-soft); transform: rotate(45deg); }
+
+.guest {
+  margin: 14px 0 -6px;
+  font-family: var(--script);
+  font-size: 31px;
+  line-height: 1.25;
+  color: var(--ink);
+}
+.guest.is-long { font-size: 25px; }
+
+.kicker {
+  margin: 12px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  padding-left: .34em; /* optically re-centre tracked caps */
+}
+
+/* ───────────────────────── Envelope ───────────────────────── */
+
+.env {
+  position: absolute;
+  left: calc(50% - var(--env-w) / 2);
+  top: calc(50% - var(--env-h) * .5);
+  width: var(--env-w);
+  height: var(--env-h);
+  outline: none;
+}
+
+.env-layer {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.env-layer > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.env-back {
+  z-index: 1;
+  border-radius: 5px;
+  box-shadow:
+    0 1px 2px rgba(58, 40, 18, .12),
+    0 18px 34px -14px rgba(58, 40, 18, .38),
+    0 40px 60px -30px rgba(58, 40, 18, .25);
+}
+
+.card-clip {
+  position: absolute;
+  z-index: 2;
+  left: -100vw;
+  right: -100vw;
+  top: -300svh;
+  bottom: 2px; /* stay just inside the pocket's bottom edge */
+  overflow: hidden;
+  pointer-events: none;
+  transform-origin: calc(100vw + var(--env-w) / 2) calc(300svh + var(--env-h) / 2); /* envelope centre */
+  will-change: transform;
+}
+
+.env-pocket { z-index: 3; }
+.env-flap { z-index: 4; perspective: 1100px; perspective-origin: 50% 45%; }
+.env-seal { z-index: 5; }
+
+html.is-idle .env-layer,
+html.is-idle .card-clip { animation: sway 5.4s ease-in-out infinite; }
+
+@keyframes sway {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-1.3deg); }
+  50% { transform: translate3d(0, -5px, 0) rotate(1.3deg); }
+}
+
+/* svg paint */
+.bk { fill: var(--env-in); }
+.liner { fill: var(--liner); }
+.jaali-line { fill: none; stroke: var(--liner-line); stroke-width: 2.3; }
+.pk-l { fill: var(--env-left); }
+.pk-r { fill: var(--env-right); }
+.pk-b { fill: var(--env-bottom); }
+.fl { fill: var(--env-flap); }
+.foil { fill: none; stroke: var(--foil); stroke-width: 1.2; stroke-linejoin: round; opacity: .9; }
+.flap-face > svg.shade { opacity: 0; will-change: opacity; }
+.shade path { fill: #1d1309; }
+.flap-shadow { will-change: opacity; }
+.flap-shadow path { fill: #2c1d0c; fill-opacity: .22; }
+
+.flap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 63.77%; /* 440 / 690 */
+  transform-origin: 50% 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.flap-face {
+  position: absolute;
+  inset: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.flap-face > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; }
+.flap-back { transform: rotateX(180deg); }
+
+/* wax seal */
+.seal {
+  position: absolute;
+  left: 50%;
+  top: 58.5%;
+  width: 23%;
+  aspect-ratio: 215 / 225;
+  transform: translate(-50%, -50%);
+}
+
+.seal-whole,
+.seal-half {
+  position: absolute;
+  inset: 0;
+  filter: drop-shadow(0 1.5px 1.5px rgba(48, 28, 8, .32)) drop-shadow(0 6px 7px rgba(48, 28, 8, .2));
+  will-change: transform, opacity;
+}
+
+.seal-half { opacity: 0; }
+.seal-half--l { transform-origin: 28% 60%; }
+.seal-half--r { transform-origin: 72% 60%; }
+
+.seal-img,
+.seal-glint {
+  position: absolute;
+  inset: 0;
+  background: center / contain no-repeat;
+}
+html[data-event="barat"] .seal-img { background-image: url(seal-gold.webp); }
+html[data-event="walima"] .seal-img { background-image: url(seal-rose.webp); }
+
+.seal-half--l .seal-img { clip-path: polygon(0 0, 53% 0, 47% 19%, 56% 37%, 46% 56%, 55% 75%, 48% 100%, 0 100%); }
+.seal-half--r .seal-img { clip-path: polygon(53% 0, 100% 0, 100% 100%, 48% 100%, 55% 75%, 46% 56%, 56% 37%, 47% 19%); }
+
+.seal-glint {
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 250, 235, .6) 50%, transparent 62%) 160% 0 / 260% 100% no-repeat;
+  -webkit-mask: center / contain no-repeat;
+  mask: center / contain no-repeat;
+}
+html[data-event="barat"] .seal-glint { -webkit-mask-image: url(seal-gold.webp); mask-image: url(seal-gold.webp); }
+html[data-event="walima"] .seal-glint { -webkit-mask-image: url(seal-rose.webp); mask-image: url(seal-rose.webp); }
+
+html.is-idle .seal-whole { animation: seal-breathe 2.8s ease-in-out infinite; }
+html.is-idle .seal-glint { animation: glint 4.6s ease-in-out infinite 1.4s; }
+
+@keyframes seal-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.045); }
+}
+@keyframes glint {
+  0% { background-position: 160% 0; }
+  45%, 100% { background-position: -60% 0; }
+}
+
+/* the card while it is inside / leaving the envelope */
+.card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+.card-shadow {
+  position: absolute;
+  inset: 0;
+  box-shadow: 0 2px 5px rgba(40, 26, 10, .14), 0 14px 30px -10px rgba(40, 26, 10, .38);
+  will-change: opacity;
+}
+html[data-event="barat"] .card-shadow { inset: 2.6% 5% 2.6% 5.07%; }
+.card-face {
+  position: absolute;
+  inset: 0;
+}
+.card-face img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.card-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(34, 22, 8, .1), rgba(34, 22, 8, .3) 45%);
+  will-change: opacity;
+}
+/* inside the envelope only the paper shows; the full artwork (torn edges and all) fades in as it lands */
+html[data-event="barat"] .card-art,
+html[data-event="barat"] .card-shade { clip-path: inset(2.6% 5% 2.6% 5.07%); }
+.card-full { opacity: 0; will-change: opacity; }
+html[data-event="walima"] .card-full { display: none; }
+
+/* call to action */
+.cta {
+  position: absolute;
+  will-change: opacity;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--sab) + 7.5svh);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+.cta-text {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .42em;
+  padding-left: .42em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.cta .rule { margin: 0; width: 120px; }
+.cta-chevron {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--ink-soft);
+  animation: nudge 2.2s ease-in-out infinite;
+}
+.cta-chevron svg { width: 12px; height: 12px; }
+
+@keyframes nudge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* particles */
+.fx {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* ───────────────────────── The opened invitation ───────────────────────── */
+
+.invite {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 480px);
+  margin: 0 auto;
+}
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--sat) + 12px) 0 calc(var(--sab) + 60px);
+}
+
+.final-card {
+  display: block;
+  width: min(100%, calc((100svh - var(--sat) - var(--sab) - 72px) * .7095));
+  height: auto;
+  aspect-ratio: 1419 / 2000;
+}
+
+/* The barat artwork is torn paper photographed on a surface — feather its edges into the page. */
+html[data-event="barat"] .feather {
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0, #000 2.6%, #000 97.4%, transparent 100%),
+    linear-gradient(180deg, transparent 0, #000 1.3%, #000 98.2%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, transparent 0, #000 2.6%, #000 97.4%, transparent 100%),
+    linear-gradient(180deg, transparent 0, #000 1.3%, #000 98.2%, transparent 100%);
+  mask-composite: intersect;
+}
+
+.scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--sab) + 14px);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .34em;
+  padding-left: .34em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 1s ease .4s;
+}
+html.is-open .scroll-hint { opacity: 1; }
+.scroll-hint .cta-chevron { width: 26px; height: 26px; }
+
+.details {
+  padding: 40px 28px 8px;
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .38em;
+  padding-left: .38em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.event-name {
+  margin: 8px 0 0;
+  font-size: 38px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: .01em;
+}
+
+.date {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+  margin: 28px auto 0;
+  max-width: 330px;
+}
+.date-side {
+  padding: 9px 0 8px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+}
+.date-day {
+  font-size: 64px;
+  font-weight: 500;
+  line-height: .9;
+  font-variant-numeric: lining-nums;
+}
+.date-year {
+  margin: 10px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .5em;
+  padding-left: .5em;
+}
+
+.details .rule { margin-top: 30px; }
+
+.venue {
+  margin: 26px 0 0;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  line-height: 1.45;
+}
+.address {
+  margin: 6px 0 0;
+  font-size: 19px;
+  font-style: italic;
+  color: var(--ink-soft);
+  line-height: 1.35;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: minmax(0, 264px);
+  justify-content: center;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 46px;
+  padding: 0 20px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--btn-bg);
+  color: var(--ink);
+  font: 700 12.5px/1 var(--serif);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .15s ease, background-color .2s ease;
+}
+.btn:active { transform: scale(.97); }
+.btn svg { width: 17px; height: 17px; flex: none; }
+
+.countdown {
+  margin: 34px 0 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+}
+.countdown-num {
+  font-size: 44px;
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: lining-nums;
+}
+.countdown-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.signoff {
+  padding: 40px 28px calc(var(--sab) + 36px);
+  text-align: center;
+}
+.signoff .rule { margin-top: 0; }
+.signoff-names {
+  margin: 22px 0 0;
+  font-family: var(--script);
+  font-size: 44px;
+  line-height: 1.2;
+}
+.signoff-note {
+  margin: 4px 0 0;
+  font-size: 17px;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+.replay {
+  margin-top: 26px;
+  padding: 10px 14px;
+  border: 0;
+  background: none;
+  color: var(--ink-soft);
+  font: 600 11px/1 var(--serif);
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.replay span { display: inline-block; margin-right: 6px; font-size: 14px; letter-spacing: 0; }
+
+/* scroll-in reveal for the details */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .9s ease, transform 1s cubic-bezier(.2, .7, .2, 1);
+}
+.reveal.is-in { opacity: 1; transform: none; }
+
+/* iOS < 15.4 has no svh units */
+@supports not (height: 1svh) {
+  :root { --env-w: min(calc(var(--u) * 86), 370px, 58vh); }
+  body, .hero { min-height: 100vh; }
+  .intro { top: calc(var(--sat) + 5.5vh); }
+  .cta { bottom: calc(var(--sab) + 7.5vh); }
+  .card-clip { top: -300vh; transform-origin: calc(100vw + var(--env-w) / 2) calc(300vh + var(--env-h) / 2); }
+  .final-card { width: min(100%, calc((100vh - var(--sat) - var(--sab) - 72px) * .7095)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.is-idle .env-layer,
+  html.is-idle .card-clip,
+  html.is-idle .seal-whole,
+  html.is-idle .seal-glint,
+  .bismillah,
+  .cta-chevron { animation: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
