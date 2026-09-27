@@ -29,8 +29,8 @@ html[data-event="barat"] {
   --shine-b: #b8944f;
   --shine-c: #f0dca6;
   --btn-bg: rgba(255, 255, 255, .42);
-  --card-ratio: 1276 / 1896; /* the barat artwork, cropped to the paper */
-  --card-ar: .673;
+  --card-ratio: 1419 / 2000;
+  --card-ar: .7095;
 }
 
 html[data-event="walima"] {
@@ -372,7 +372,12 @@ html.is-idle .seal-glint { animation: glint 4.6s ease-in-out infinite 1.4s; }
   transform-origin: 0 0;
   will-change: transform;
 }
-.card-art { display: block; width: 100%; height: 100%; }
+.card-art,
+.card-full { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+/* barat: only the paper shows inside the envelope; the torn edges fade in as the card lands */
+html[data-event="barat"] .card-art { clip-path: inset(2.6% 5% 2.6% 5.07%); }
+.card-full { opacity: 0; will-change: opacity; }
+html[data-event="walima"] .card-full { display: none; }
 
 /* call to action */
 .cta {
@@ -447,6 +452,18 @@ html.is-idle .seal-glint { animation: glint 4.6s ease-in-out infinite 1.4s; }
   width: min(100%, calc((100svh - var(--sat) - var(--sab) - 72px) * var(--card-ar)));
   height: auto;
   aspect-ratio: var(--card-ratio);
+}
+
+/* The barat artwork is torn paper photographed on a surface — blend its outer edge into the page. */
+html[data-event="barat"] .feather {
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0, #000 2.6%, #000 97.4%, transparent 100%),
+    linear-gradient(180deg, transparent 0, #000 1.3%, #000 98.2%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, transparent 0, #000 2.6%, #000 97.4%, transparent 100%),
+    linear-gradient(180deg, transparent 0, #000 1.3%, #000 98.2%, transparent 100%);
+  mask-composite: intersect;
 }
 
 .scroll-hint {
