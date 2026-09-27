@@ -29,6 +29,8 @@ html[data-event="barat"] {
   --shine-b: #b8944f;
   --shine-c: #f0dca6;
   --btn-bg: rgba(255, 255, 255, .42);
+  --card-ratio: 1276 / 1896; /* the barat artwork, cropped to the paper */
+  --card-ar: .673;
 }
 
 html[data-event="walima"] {
@@ -49,6 +51,8 @@ html[data-event="walima"] {
   --shine-b: #b4585f;
   --shine-c: #eeb2b4;
   --btn-bg: rgba(255, 255, 255, .45);
+  --card-ratio: 1419 / 2000;
+  --card-ar: .7095;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -109,9 +113,7 @@ html.is-sealed body {
   position: absolute;
   inset: 0;
   will-change: opacity;
-  background:
-    radial-gradient(90% 55% at 50% 50%, var(--glow) 0%, transparent 70%),
-    radial-gradient(140% 90% at 50% 50%, transparent 55%, rgba(60, 40, 20, .07) 100%);
+  background: radial-gradient(90% 55% at 50% 50%, var(--glow) 0%, transparent 70%);
 }
 
 .stage-inner {
@@ -362,7 +364,7 @@ html.is-idle .seal-glint { animation: glint 4.6s ease-in-out infinite 1.4s; }
   45%, 100% { background-position: -60% 0; }
 }
 
-/* the card while it is inside / leaving the envelope */
+/* the card while it is inside / leaving the envelope — just the artwork, no shading or shadow */
 .card {
   position: absolute;
   left: 0;
@@ -370,29 +372,7 @@ html.is-idle .seal-glint { animation: glint 4.6s ease-in-out infinite 1.4s; }
   transform-origin: 0 0;
   will-change: transform;
 }
-.card-shadow {
-  position: absolute;
-  inset: 0;
-  box-shadow: 0 2px 5px rgba(40, 26, 10, .14), 0 14px 30px -10px rgba(40, 26, 10, .38);
-  will-change: opacity;
-}
-html[data-event="barat"] .card-shadow { inset: 2.6% 5% 2.6% 5.07%; }
-.card-face {
-  position: absolute;
-  inset: 0;
-}
-.card-face img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
-.card-shade {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(34, 22, 8, .1), rgba(34, 22, 8, .3) 45%);
-  will-change: opacity;
-}
-/* inside the envelope only the paper shows; the full artwork (torn edges and all) fades in as it lands */
-html[data-event="barat"] .card-art,
-html[data-event="barat"] .card-shade { clip-path: inset(2.6% 5% 2.6% 5.07%); }
-.card-full { opacity: 0; will-change: opacity; }
-html[data-event="walima"] .card-full { display: none; }
+.card-art { display: block; width: 100%; height: 100%; }
 
 /* call to action */
 .cta {
@@ -464,21 +444,9 @@ html[data-event="walima"] .card-full { display: none; }
 
 .final-card {
   display: block;
-  width: min(100%, calc((100svh - var(--sat) - var(--sab) - 72px) * .7095));
+  width: min(100%, calc((100svh - var(--sat) - var(--sab) - 72px) * var(--card-ar)));
   height: auto;
-  aspect-ratio: 1419 / 2000;
-}
-
-/* The barat artwork is torn paper photographed on a surface — feather its edges into the page. */
-html[data-event="barat"] .feather {
-  -webkit-mask-image:
-    linear-gradient(90deg, transparent 0, #000 2.6%, #000 97.4%, transparent 100%),
-    linear-gradient(180deg, transparent 0, #000 1.3%, #000 98.2%, transparent 100%);
-  -webkit-mask-composite: source-in;
-  mask-image:
-    linear-gradient(90deg, transparent 0, #000 2.6%, #000 97.4%, transparent 100%),
-    linear-gradient(180deg, transparent 0, #000 1.3%, #000 98.2%, transparent 100%);
-  mask-composite: intersect;
+  aspect-ratio: var(--card-ratio);
 }
 
 .scroll-hint {
@@ -507,6 +475,7 @@ html.is-open .scroll-hint { opacity: 1; }
   padding: 40px 28px 8px;
   text-align: center;
 }
+.details, .rsvp { font-variant-numeric: lining-nums; } /* Cormorant defaults to old-style figures; phone numbers need lining ones */
 
 .eyebrow {
   margin: 0;
@@ -555,6 +524,13 @@ html.is-open .scroll-hint { opacity: 1; }
   font-weight: 600;
   letter-spacing: .5em;
   padding-left: .5em;
+}
+
+.date-time {
+  margin: 12px 0 0;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: .04em;
 }
 
 .details .rule { margin-top: 30px; }
@@ -625,6 +601,33 @@ html.is-open .scroll-hint { opacity: 1; }
   color: var(--ink-soft);
 }
 
+.rsvp {
+  padding: 40px 28px 0;
+  text-align: center;
+}
+.rsvp .rule { margin: 0 auto 26px; }
+.rsvp-names {
+  margin: 10px 0 0;
+  font-size: 19px;
+  font-style: italic;
+  line-height: 1.45;
+}
+.rsvp-list {
+  display: grid;
+  gap: 10px;
+  max-width: 320px;
+  margin: 20px auto 0;
+  padding: 0;
+  list-style: none;
+}
+.rsvp-list li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+.btn--num { font-size: 15px; letter-spacing: .06em; padding: 0 14px; font-variant-numeric: lining-nums; }
+.btn--chat { padding: 0 16px; }
+
 .signoff {
   padding: 40px 28px calc(var(--sab) + 36px);
   text-align: center;
@@ -670,7 +673,7 @@ html.is-open .scroll-hint { opacity: 1; }
   .intro { top: calc(var(--sat) + 5.5vh); }
   .cta { bottom: calc(var(--sab) + 7.5vh); }
   .card-clip { top: -300vh; transform-origin: calc(100vw + var(--env-w) / 2) calc(300vh + var(--env-h) / 2); }
-  .final-card { width: min(100%, calc((100vh - var(--sat) - var(--sab) - 72px) * .7095)); }
+  .final-card { width: min(100%, calc((100vh - var(--sat) - var(--sab) - 72px) * var(--card-ar))); }
 }
 
 @media (prefers-reduced-motion: reduce) {

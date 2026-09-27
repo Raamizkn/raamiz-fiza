@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Raamiz &amp; Fiza · Invitations</title>
-<meta name="description" content="Nikkah · Friday, 18 December 2026 · Lahore — Walima · Sunday, 20 December 2026 · Islamabad">
+<meta name="description" content="Barat · Friday, 18 December 2026 · 3 to 6 PM · Lahore — Walima · Sunday, 20 December 2026 · 1 to 4 PM · Islamabad">
 <meta name="robots" content="noindex, nofollow">
 <meta name="format-detection" content="telephone=no">
 <meta name="theme-color" content="#e6e3db">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Raamiz &amp; Fiza">
 <meta property="og:title" content="Raamiz &amp; Fiza · Wedding invitations">
-<meta property="og:description" content="Nikkah · Friday, 18 December 2026 · Lahore — Walima · Sunday, 20 December 2026 · Islamabad">
+<meta property="og:description" content="Barat · Friday, 18 December 2026 · 3 to 6 PM · Lahore — Walima · Sunday, 20 December 2026 · 1 to 4 PM · Islamabad">
 <meta property="og:url" content="https://raamizkn.github.io/raamiz-fiza/">
 <meta property="og:image" content="https://raamizkn.github.io/raamiz-fiza/assets/og-barat.jpg">
 <meta property="og:image:width" content="1200">
@@ -40,6 +40,7 @@
     background: radial-gradient(90% 50% at 50% 0%, #f4f1ea 0%, transparent 70%), var(--bg);
     color: var(--ink);
     font-family: var(--serif);
+    font-variant-numeric: lining-nums;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
   }
@@ -89,6 +90,7 @@
     width: 100%;
     height: auto;
     aspect-ratio: 1419 / 2000;
+    object-fit: cover;
     border-radius: 6px;
     box-shadow: 0 2px 5px rgba(40, 26, 10, .12), 0 14px 26px -12px rgba(40, 26, 10, .4);
     transition: transform .2s ease;
@@ -186,14 +188,14 @@
 
   <div class="events">
     <a class="event" href="barat/">
-      <img src="assets/card-barat.webp" width="1419" height="2000" alt="Nikkah invitation card">
-      <h2>Nikkah</h2>
-      <p>Friday, 18 December<br>Palm Hills Country Club, Lahore</p>
+      <img src="assets/card-barat.webp" width="1276" height="1896" alt="Barat invitation card">
+      <h2>Barat</h2>
+      <p>Friday, 18 December · 3–6&nbsp;PM<br>Palm Hills Country Club, Lahore</p>
     </a>
     <a class="event" href="walima/">
       <img src="assets/card-walima.webp" width="1419" height="2000" alt="Walima invitation card">
       <h2>Walima</h2>
-      <p>Sunday, 20 December<br>Montage Event Complex, Islamabad</p>
+      <p>Sunday, 20 December · 1–4&nbsp;PM<br>Montage Event Complex, Islamabad</p>
     </a>
   </div>
 
@@ -203,12 +205,12 @@
     <input id="guest" type="text" autocomplete="off" placeholder="e.g. Khan Family" maxlength="48">
     <p class="hint">Shown on the envelope as “Dear …,”.</p>
 
-    <div class="link-row" data-event="barat" data-title="Nikkah" data-when="Friday, 18 December 2026 at Palm Hills Country Club, Lahore">
-      <strong>Nikkah link</strong>
+    <div class="link-row" data-event="barat" data-title="Barat" data-when="Friday, 18 December 2026, 3 to 6 PM at Palm Hills Country Club, Lahore" data-maps="Palm Hills Country Club, Barki Road, Lahore">
+      <strong>Barat link</strong>
       <code></code>
       <div class="buttons"><button type="button" data-copy>Copy link</button><button type="button" class="wa" data-wa>WhatsApp</button></div>
     </div>
-    <div class="link-row" data-event="walima" data-title="Walima" data-when="Sunday, 20 December 2026 at Montage Event Complex, Islamabad">
+    <div class="link-row" data-event="walima" data-title="Walima" data-when="Sunday, 20 December 2026, 1 to 4 PM at Montage Event Complex, Islamabad" data-maps="Montage Event Complex, Main Gulberg Expressway, Islamabad">
       <strong>Walima link</strong>
       <code></code>
       <div class="buttons"><button type="button" data-copy>Copy link</button><button type="button" class="wa" data-wa>WhatsApp</button></div>
@@ -235,7 +237,8 @@
     const message = (row) => {
       const name = input.value.replace(/\s+/g, ' ').trim();
       const greeting = name ? `Assalam-o-Alaikum ${name}!` : 'Assalam-o-Alaikum!';
-      return `${greeting} You are cordially invited to the ${row.dataset.title} of Raamiz & Fiza on ${row.dataset.when}. 💌\n\nOpen your invitation: ${linkFor(row)}`;
+      const location = `https://maps.google.com/?q=${encodeURIComponent(row.dataset.maps).replace(/%20/g, '+')}`;
+      return `${greeting} You are cordially invited to the ${row.dataset.title} of Raamiz & Fiza on ${row.dataset.when}. 💌\n\nOpen your invitation: ${linkFor(row)}\n\n📍 Location: ${location}`;
     };
 
     const refresh = () => rows.forEach((row) => { row.querySelector('code').textContent = linkFor(row); });

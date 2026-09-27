@@ -204,9 +204,6 @@
   const clipBox = $('.card-clip');
   const card = $('.card');
   const cardImg = $('.card-art');
-  const cardFull = $('.card-full');
-  const cardShade = $('.card-shade');
-  const cardShadow = $('.card-shadow');
   const flapLayer = $('.env-flap');
   const flap = $('.flap');
   const shadeFront = $('.flap-front .shade');
@@ -222,11 +219,6 @@
   const glow = $('.stage-glow');
   const finalCard = $('.final-card');
   const invite = $('.invite');
-
-  // The barat artwork is torn paper on a surface; inside the envelope only the paper shows.
-  const PAPER = EVENT === 'barat'
-    ? { t: 0.026, r: 0.05, b: 0.026, l: 0.0507 }
-    : { t: 0, r: 0, b: 0, l: 0 };
 
   // choreography, in ms
   const T = {
@@ -275,10 +267,10 @@
     card.style.width = `${f.width}px`;
     card.style.height = `${f.height}px`;
 
-    const s0 = (0.9 * W) / ((1 - PAPER.l - PAPER.r) * f.width);
-    const visibleH = (1 - PAPER.t - PAPER.b) * f.height * s0;
-    const x0 = e.left + 0.05 * W - PAPER.l * f.width * s0;
-    const y0 = e.top + 0.035 * H - PAPER.t * f.height * s0;
+    const s0 = (0.9 * W) / f.width;
+    const visibleH = f.height * s0;
+    const x0 = e.left + 0.05 * W;
+    const y0 = e.top + 0.035 * H;
 
     // rise until about two-thirds of the card clears the pocket (its lowest point sits ~49.6% down)
     const target = e.top + 0.496 * H - 0.68 * visibleH;
@@ -348,9 +340,6 @@
     const Y = lerp(pathY, g.yf, fly);
     const S = lerp(g.s0, 1, fly);
     card.style.transform = `translate3d(${(X - g.cx).toFixed(2)}px,${(Y - g.cy - dy).toFixed(2)}px,0) scale(${S.toFixed(5)})`;
-    cardShade.style.opacity = (1 - seg(t, [T.rise[0], lerp(T.rise[0], T.rise[1], 0.75)])).toFixed(3);
-    cardShadow.style.opacity = (1 - fly).toFixed(3);
-    if (EVENT === 'barat') cardFull.style.opacity = seg(fly, [0.1, 0.9]).toFixed(3);
 
     // surroundings clear away
     cta.style.opacity = (1 - ease.out(seg(t, T.cta))).toFixed(3);
