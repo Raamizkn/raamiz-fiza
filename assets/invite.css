@@ -135,28 +135,28 @@ html[data-event="barat"] .decor--tl {
   left: calc(var(--u) * -10);
   width: calc(var(--u) * 38);
   aspect-ratio: 338 / 710;
-  background-image: url(decor-barat-tl.webp);
+  background-image: url(decor-barat-tl.webp?v=2);
 }
 html[data-event="barat"] .decor--br {
   bottom: calc(var(--u) * -6);
   right: calc(var(--u) * -12);
   width: calc(var(--u) * 56);
   aspect-ratio: 450 / 620;
-  background-image: url(decor-barat-br.webp);
+  background-image: url(decor-barat-br.webp?v=2);
 }
 html[data-event="walima"] .decor--tl {
   top: calc(var(--sat) * .4 - var(--u) * 6);
   left: calc(var(--u) * -12);
   width: calc(var(--u) * 54);
   aspect-ratio: 460 / 610;
-  background-image: url(decor-walima-tl.webp);
+  background-image: url(decor-walima-tl.webp?v=2);
 }
 html[data-event="walima"] .decor--br {
   bottom: calc(var(--u) * -7);
   right: calc(var(--u) * -14);
   width: calc(var(--u) * 66);
   aspect-ratio: 630 / 580;
-  background-image: url(decor-walima-br.webp);
+  background-image: url(decor-walima-br.webp?v=2);
 }
 
 .intro {
